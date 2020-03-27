@@ -1,0 +1,155 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+
+
+    var today = new Date();
+    today.setDate(today.getDate() - 1);
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = mm + '-' + dd + '-' + yyyy;
+
+
+
+
+    var markers = [];
+    var counter = 0;
+
+
+    $.ajax({
+         url:"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/"+today+".csv",
+         dataType:"text",
+         success:function(data){
+            var _data = data.split(/\r?\n|\r/);
+            for(var count = 1; count<_data.length; count++)
+            {
+             var cell_data = _data[count].split(",");
+             
+             
+            
+             
+             
+        
+             
+             
+             if(cell_data[3] !== "\"Korea"){
+                var m = {
+                 "title" : "Cases of Coronavirus Reported in: ",
+                 "fips": cell_data[0],
+                 "city": cell_data[1],
+                 "state" : cell_data[2],
+                 "country" : cell_data[3],
+                 "last_update" : cell_data[4],
+                 "latitude" : cell_data[5],
+                 "long" : cell_data[6],
+                 "confirmed" : cell_data[7],
+                 "deaths" : cell_data[8],
+                 "recovered" : cell_data[9] 
+                }
+                
+                markers[counter] = m;
+                counter++
+            }
+            
+            else{
+
+                var m = {
+                "title" : "Cases of Coronavirus Reported in: ",
+                 "fips": cell_data[0],
+                 "city": cell_data[1],
+                 "state" : cell_data[2],
+                 "country" : "South Korea",
+                 "last_update" : cell_data[5],
+                 "latitude" : cell_data[6],
+                 "long" : cell_data[7],
+                 "confirmed" : cell_data[8],
+                 "deaths" : cell_data[9],
+                 "recovered" : cell_data[10] 
+                }
+
+                markers[counter] = m;
+                counter++
+            }
+
+        }
+        }});
+
+
+    window.onload = function () {
+        LoadMap();
+    }
+    function LoadMap() {
+        var mapOptions = {
+            center: new google.maps.LatLng(37.0902, -95.7129),
+            zoom: 2.25,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("dvMap"), mapOptions);
+ 
+        //Create and open InfoWindow.
+        var infoWindow = new google.maps.InfoWindow();
+ 
+        for (var i = 0; i < counter; i++) {
+            var data = markers[i];
+            var myLatlng = new google.maps.LatLng(data.latitude, data.long);
+
+            var goldStar = {
+                path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+                fillColor: 'yellow',
+                fillOpacity: 0.8,
+                scale: 0.15,
+                strokeColor: 'gold',
+                strokeWeight: 5
+            };
+            var purpleStar = {
+                path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+                fillColor: 'purple',
+                fillOpacity: 0.8,
+                scale: 0.15,
+                strokeColor: 'gold',
+                strokeWeight: 5
+            };
+            if(parseInt(data.deaths, 10) >= 1000 ){
+                var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                icon: goldStar,
+                title: data.title
+                });
+            }
+            else if(parseInt(data.confirmed, 10) >= 1000 ){
+                var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                icon: purpleStar,
+                title: data.title
+                });
+            }
+            else{
+                var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                title: data.title
+                });    
+            }
+            
+            //Attach click event to the marker.
+            (function (marker, data) {
+                google.maps.event.addListener(marker, "click", function (e) {
+                    //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
+                    infoWindow.setContent("<div style = 'width:200px;min-height:40px'><h6>" + data.title +"in " +data.country +", "+ data.state +", "+data.city +"</h6></br>"+ "Cases Confirmed: "+data.confirmed+ "<br>Total Deaths: "+data.deaths+"<br>Cases Recovered: "+data.recovered+"<br><br><br>This is the official report in the area as of " + data.last_update + "</div>");
+                    infoWindow.open(map, marker);
+                });
+            })(marker, data);
+        }
+    }
+</script>
+<div id="dvMap" style="width: 1892px; height: 1080px;">
+
+</div>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzpVEn9GTN30_LQ-TYj7ZBfX_OisfjL34&callback=LoadMap">
+</script>
