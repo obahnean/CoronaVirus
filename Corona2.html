@@ -12,6 +12,19 @@
     var yyyy = today.getFullYear();
     today = mm + '-' + dd + '-' + yyyy;
 
+    var sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    var d7 = String(sevenDaysAgo.getDate()).padStart(2, '0');
+    var m7 = String(sevenDaysAgo.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var y7 = sevenDaysAgo.getFullYear();
+    sevenDaysAgo = m7 + '-' + d7 + '-' + y7;
+
+    var thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    var d30 = String(thirtyDaysAgo.getDate()).padStart(2, '0');
+    var m30 = String(thirtyDaysAgo.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var y30 = thirtyDaysAgo.getFullYear();
+    thirtyDaysAgo = m7 + '-' + d7 + '-' + y7;
 
 
 
@@ -27,14 +40,7 @@
             for(var count = 1; count<_data.length; count++)
             {
              var cell_data = _data[count].split(",");
-             
-             
             
-             
-             
-        
-             
-             
              if(cell_data[3] !== "\"Korea"){
                 var m = {
                  "title" : "Cases of Coronavirus Reported in: ",
@@ -77,6 +83,107 @@
         }
         }});
 
+     $.ajax({
+         url:"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/"+sevenDaysAgo+".csv",
+         dataType:"text",
+         success:function(data7){
+            var _data7 = data7.split(/\r?\n|\r/);
+            for(var count7 = 1; count7<_data7.length; count7++)
+            {
+             var cell_data7 = _data7[count7].split(",");
+            
+             if(cell_data7[3] !== "\"Korea"){
+                var m7 = {
+                 "title" : "Cases of Coronavirus Reported in: ",
+                 "fips": cell_data7[0],
+                 "city": cell_data7[1],
+                 "state" : cell_data7[2],
+                 "country" : cell_data7[3],
+                 "last_update" : cell_data7[4],
+                 "latitude" : cell_data7[5],
+                 "long" : cell_data7[6],
+                 "confirmed" : cell_data7[7],
+                 "deaths" : cell_data7[8],
+                 "recovered" : cell_data7[9] 
+                }
+                
+                //markers7[counter7] = m7;
+                counter7++
+            }
+            
+            else{
+
+                var m = {
+                "title" : "Cases of Coronavirus Reported in: ",
+                 "fips": cell_data7[0],
+                 "city": cell_data7[1],
+                 "state" : cell_data7[2],
+                 "country" : "South Korea",
+                 "last_update" : cell_data7[5],
+                 "latitude" : cell_data7[6],
+                 "long" : cell_data7[7],
+                 "confirmed" : cell_data7[8],
+                 "deaths" : cell_data7[9],
+                 "recovered" : cell_data7[10] 
+                }
+
+                //markers[counter] = m;
+                counter++
+            }
+
+        }
+        }});
+
+      $.ajax({
+         url:"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/"+thirtyDaysAgo+".csv",
+         dataType:"text",
+         success:function(data30){
+            var _data30 = data30.split(/\r?\n|\r/);
+            for(var count = 1; count<_data.length; count++)
+            {
+             var cell_data30 = _data[count].split(",");
+            
+             if(cell_data[3] !== "\"Korea"){
+                var m = {
+                 "title" : "Cases of Coronavirus Reported in: ",
+                 "fips": cell_data30[0],
+                 "city": cell_data30[1],
+                 "state" : cell_data30[2],
+                 "country" : cell_data30[3],
+                 "last_update" : cell_data30[4],
+                 "latitude" : cell_data30[5],
+                 "long" : cell_data30[6],
+                 "confirmed" : cell_data30[7],
+                 "deaths" : cell_data30[8],
+                 "recovered" : cell_data30[9] 
+                }
+                
+                //markers[counter] = m;
+                counter++
+            }
+            
+            else{
+
+                var m = {
+                "title" : "Cases of Coronavirus Reported in: ",
+                 "fips": cell_data30[0],
+                 "city": cell_data30[1],
+                 "state" : cell_data30[2],
+                 "country" : "South Korea",
+                 "last_update" : cell_data30[5],
+                 "latitude" : cell_data30[6],
+                 "long" : cell_data30[7],
+                 "confirmed" : cell_data30[8],
+                 "deaths" : cell_data30[9],
+                 "recovered" : cell_data30[10] 
+                }
+
+                //Smarkers[counter] = m;
+                counter++
+            }
+
+        }
+        }});
 
     window.onload = function () {
         LoadMap();
@@ -112,6 +219,14 @@
                 strokeColor: 'gold',
                 strokeWeight: 5
             };
+            var greenStar = {
+                path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+                fillColor: 'green',
+                fillOpacity: 0.8,
+                scale: 0.15,
+                strokeColor: 'green',
+                strokeWeight: 5
+            };
             if(parseInt(data.deaths, 10) >= 1000 ){
                 var marker = new google.maps.Marker({
                 position: myLatlng,
@@ -120,14 +235,15 @@
                 title: data.title
                 });
             }
-            else if(parseInt(data.confirmed, 10) >= 1000 ){
+            else if(parseInt(data.confirmed, 10) === 0  ){
                 var marker = new google.maps.Marker({
                 position: myLatlng,
                 map: map,
-                icon: purpleStar,
+                icon: greenStar,
                 title: data.title
-                });
+                }); 
             }
+
             else{
                 var marker = new google.maps.Marker({
                 position: myLatlng,
