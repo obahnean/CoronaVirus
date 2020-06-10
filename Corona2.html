@@ -235,6 +235,22 @@
                 strokeColor: 'red',
                 strokeWeight: 5
             };
+             var orangeStar = {
+                path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+                fillColor: 'orange',
+                fillOpacity: 0.8,
+                scale: 0.15,
+                strokeColor: 'orange',
+                strokeWeight: 5
+            };
+            if(parseInt(data.confirmed, 10) >= 100000 ){
+                var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                icon: redStar,
+                title: data.title
+                });
+            }
             if(parseInt(data.confirmed, 10) >= 50000 ){
                 var marker = new google.maps.Marker({
                 position: myLatlng,
@@ -243,7 +259,7 @@
                 title: data.title
                 });
             }
-            else if(parseInt(data.deaths, 10) >= 10000 ){
+            else if(parseInt(data.confirmed, 10) >= 10000 ){
                 var marker = new google.maps.Marker({
                 position: myLatlng,
                 map: map,
