@@ -251,7 +251,7 @@
                 title: data.title
                 });
             }
-            if(parseInt(data.confirmed, 10) >= 50000 ){
+            else if(parseInt(data.confirmed, 10) >= 50000 ){
                 var marker = new google.maps.Marker({
                 position: myLatlng,
                 map: map,
