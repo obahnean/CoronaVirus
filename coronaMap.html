@@ -1,0 +1,458 @@
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    
+
+
+
+    <script type="text/javascript">
+      google.charts.load('current', {
+        'packages':['geochart'],
+        // Note: you will need to get a mapsApiKey for your project.
+        // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+        'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+      });
+      google.charts.setOnLoadCallback(drawRegionsMap);
+
+
+      function getStateAbbrev(state){
+        switch(state){
+          case "Alabama":
+            return "US-AL";
+          case "Alaska":
+            return "US-AK";
+          case "Arizona":
+            return "US-AZ";
+          case "Arkansas":
+            return "US-AR";
+          case "California":
+            return "US-CA";
+          case "Colorado":
+            return "US-CO";
+          case "Connecticut":
+            return "US-CT";
+          case "Delaware":
+            return "US-DE";
+          case "Florida":
+            return "US-FL";
+          case "Georgia":
+            return "US-GA";
+          case "Hawaii":
+            return "US-HI";
+          case "Idaho":
+            return "US-ID";
+          case "Illinois":
+            return "US-IL";
+          case "Indiana":
+            return "US-IN";
+          case "Iowa":
+            return "US-IA";
+          case "Kansas":
+            return "US-KS";
+          case "Kentucky":
+            return "US-KY";
+          case "Louisiana":
+            return "US-LA";
+          case "Maine":
+            return "US-ME";
+          case "Maryland":
+            return "US-MD";
+          case "Massachusetts":
+            return "US-MA";
+          case "Michigan":
+            return "US-MI";
+          case "Minnesota":
+            return "US-MN";
+          case "Mississippi":
+            return "US-MS";
+          case "Missouri":
+            return "US-MO";
+          case "Montana":
+            return "US-MT";
+          case "Nebraska":
+            return "US-NE";
+          case "Nevada":
+            return "US-NV";
+          case "New Hampshire":
+            return "US-NH";
+          case "New Jersey":
+            return "US-NJ";
+          case "New Mexico":
+            return "US-NM";
+          case "New York":
+            return "US-NY";
+          case "North Carolina":
+            return "US-NC";
+          case "North Dakota":
+            return "US-ND";
+          case "Ohio":
+            return "US-OH";
+          case "Oklahoma":
+            return "US-OK";
+          case "Oregon":
+            return "US-OR";
+          case "Pennsylvania":
+            return "US-PA";
+          case "Rhode Island":
+            return "US-RI";
+          case "South Carolina":
+            return "US-SC";
+          case "South Dakota":
+            return "US-SD";
+          case "Tennessee":
+            return "US-TN";
+          case "Texas":
+            return "US-TX";
+          case "Utah":
+            return "US-UT";
+          case "Vermont":
+            return "US-VT";
+          case "Virginia":
+            return "US-VA";
+          case "Washington":
+            return "US-WA";
+          case "West Virginia":
+            return "US-WV";
+          case "Wisconsin":
+            return "US-WI";
+          case "Wyoming":
+            return "US-WY";
+          case "American Samoa":
+            return "US-AS";
+          case "District of Columbia":
+            return "US-DC";
+          case "Federated States of Micronesia":
+            return "US-FM";
+          case "Guam":
+            return "US-GU";
+          case "Marshall Islands":
+            return "US-MH";
+          case "Northern Mariana Islands":
+            return "US-MP";
+          case "Palau":
+            return "US-PW";
+          case "Puerto Rico":
+            return "US-PR";
+          case "Virgin Islands":
+            return "US-VI";
+          }
+          
+          
+          
+            
+      }
+
+
+      var today = new Date();
+      today.setDate(today.getDate() - 1);
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      today = mm + '-' + dd + '-' + yyyy;
+
+      var myArray;
+    
+      console.log(today);
+      $.ajax({
+         url:"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports_us/"+today+".csv",
+         dataType:"text",
+         success:function(data){
+           
+          var _data = data.split(/\r?\n|\r/);
+          
+          for(var count = 1; count<59; count++){
+            var cell_data = _data[count].split(",");
+            let state = getStateAbbrev(cell_data[0]);
+            if(state === 'US-AL'){
+                let casesAL = parseInt(cell_data[5], 10);
+                let deathsAL = parseInt(cell_data[6], 10);
+                myArray.push([state, casesAL, deathsAL]);
+            }
+            if(state === 'US-AK'){
+                let casesAK = parseInt(cell_data[5], 10);
+                let deathsAK = parseInt(cell_data[6], 10);
+                myArray.push([state, casesAK, deathsAK]);
+            }
+            if(state === 'US-AS'){
+                let casesAS = parseInt(cell_data[5], 10);
+                let deathsAS = parseInt(cell_data[6], 10);
+                //myArray.push([state, casesAS, deathsAS]);
+            }
+            if(state === 'US-AR'){
+                let casesAR = parseInt(cell_data[5], 10);
+                let deathsAR = parseInt(cell_data[6], 10);
+                myArray.push([state, casesAR, deathsAR]);
+            }
+            if(state === 'US-AZ'){
+                let casesAZ = parseInt(cell_data[5], 10);
+                let deathsAZ = parseInt(cell_data[6], 10);
+                myArray.push([state, casesAZ, deathsAZ]);
+            }
+            if(state === 'US-CA'){
+                let casesCA = parseInt(cell_data[5], 10);
+                let deathsCA = parseInt(cell_data[6], 10);
+                myArray.push([state, casesCA, deathsCA]);
+            }
+            if(state === 'US-CO'){
+                let casesCO = parseInt(cell_data[5], 10);
+                let deathsCO = parseInt(cell_data[6], 10);
+                myArray.push([state, casesCO, deathsCO]);
+            }
+            if(state === 'US-CT'){
+                let casesCT = parseInt(cell_data[5], 10);
+                let deathsCT = parseInt(cell_data[6], 10);
+                myArray.push([state, casesCT, deathsCT]);
+            }
+            if(state === 'US-DE'){
+                let casesDE = parseInt(cell_data[5], 10);
+                let deathsDE = parseInt(cell_data[6], 10);
+                myArray.push([state, casesDE, deathsDE]);
+            }
+            if(state === 'US-DC'){
+                let casesDC = parseInt(cell_data[5], 10);
+                let deathsDC = parseInt(cell_data[6], 10);
+                myArray.push([state, casesDC, deathsDC]);
+            }
+            if(state === 'US-FL'){
+                let casesFL = parseInt(cell_data[5], 10);
+                let deathsFL = parseInt(cell_data[6], 10);
+                myArray.push([state, casesFL, deathsFL]);
+            }
+            if(state === 'US-GA'){
+                let casesGA = parseInt(cell_data[5], 10);
+                let deathsGA = parseInt(cell_data[6], 10);
+                myArray.push([state, casesGA, deathsGA]);
+            }
+            if(state === 'US-HI'){
+                let casesHI = parseInt(cell_data[5], 10);
+                let deathsHI = parseInt(cell_data[6], 10);
+                myArray.push([state, casesHI, deathsHI]);
+            }
+            if(state === 'US-ID'){
+                let casesID = parseInt(cell_data[5], 10);
+                let deathsID = parseInt(cell_data[6], 10);
+                myArray.push([state, casesID, deathsID]);
+            }
+            if(state === 'US-IL'){
+                let casesIL = parseInt(cell_data[5], 10);
+                let deathsIL = parseInt(cell_data[6], 10);
+                myArray.push([state, casesIL, deathsIL]);
+            }
+            if(state === 'US-IN'){
+                let casesIN = parseInt(cell_data[5], 10);
+                let deathsIN = parseInt(cell_data[6], 10);
+                myArray.push([state, casesIN, deathsIN]);
+            }
+            if(state === 'US-IA'){
+                let casesIA = parseInt(cell_data[5], 10);
+                let deathsIA = parseInt(cell_data[6], 10);
+                myArray.push([state, casesIA, deathsIA]);
+            }
+            if(state === 'US-KS'){
+                let casesKS = parseInt(cell_data[5], 10);
+                let deathsKS = parseInt(cell_data[6], 10);
+                myArray.push([state, casesKS, deathsKS]);
+            }
+            if(state === 'US-KY'){
+                let casesKY = parseInt(cell_data[5], 10);
+                let deathsKY = parseInt(cell_data[6], 10);
+                myArray.push([state, casesKY, deathsKY]);
+            }
+            if(state === 'US-LA'){
+                let casesLA = parseInt(cell_data[5], 10);
+                let deathsLA = parseInt(cell_data[6], 10);
+                myArray.push([state, casesLA, deathsLA]);
+            }
+            if(state === 'US-ME'){
+                let casesME = parseInt(cell_data[5], 10);
+                let deathsME = parseInt(cell_data[6], 10);
+                myArray.push([state, casesME, deathsME]);
+            }
+            if(state === 'US-MD'){
+                let casesMD = parseInt(cell_data[5], 10);
+                let deathsMD = parseInt(cell_data[6], 10);
+                myArray.push([state, casesMD, deathsMD]);
+            }
+            if(state === 'US-MA'){
+                let casesMA = parseInt(cell_data[5], 10);
+                let deathsMA = parseInt(cell_data[6], 10);
+                myArray.push([state, casesMA, deathsMA]);
+            }
+            if(state === 'US-MI'){
+                let casesMI = parseInt(cell_data[5], 10);
+                let deathsMI = parseInt(cell_data[6], 10);
+                myArray.push([state, casesMI, deathsMI]);
+            }
+            if(state === 'US-MN'){
+                let casesMN = parseInt(cell_data[5], 10);
+                let deathsMN = parseInt(cell_data[6], 10);
+                myArray.push([state, casesMN, deathsMN]);
+            }
+            if(state === 'US-MS'){
+                let casesMS = parseInt(cell_data[5], 10);
+                let deathsMS = parseInt(cell_data[6], 10);
+                myArray.push([state, casesMS, deathsMS]);
+            }
+            if(state === 'US-MO'){
+                let casesMO = parseInt(cell_data[5], 10);
+                let deathsMO = parseInt(cell_data[6], 10);
+                myArray.push([state, casesMO, deathsMO]);
+            }
+            if(state === 'US-MT'){
+                let casesMT = parseInt(cell_data[5], 10);
+                let deathsMT = parseInt(cell_data[6], 10);
+                myArray.push([state, casesMT, deathsMT]);
+            }
+            if(state === 'US-NE'){
+                let casesNE = parseInt(cell_data[5], 10);
+                let deathsNE = parseInt(cell_data[6], 10);
+                myArray.push([state, casesNE, deathsNE]);
+            }
+            if(state === 'US-NV'){
+                let casesNV = parseInt(cell_data[5], 10);
+                let deathsNV = parseInt(cell_data[6], 10);
+                myArray.push([state, casesNV, deathsNV]);
+            }
+            if(state === 'US-NH'){
+                let casesNH = parseInt(cell_data[5], 10);
+                let deathsNH = parseInt(cell_data[6], 10);
+                myArray.push([state, casesNH, deathsNH]);
+            }
+            if(state === 'US-NJ'){
+                let casesNJ = parseInt(cell_data[5], 10);
+                let deathsNJ = parseInt(cell_data[6], 10);
+                myArray.push([state, casesNJ, deathsNJ]);
+            }
+            if(state === 'US-NY'){
+                let casesNY = parseInt(cell_data[5], 10);
+                let deathsNY = parseInt(cell_data[6], 10);
+                myArray.push([state, casesNY, deathsNY]);
+            }
+            if(state === 'US-NM'){
+                let casesNM = parseInt(cell_data[5], 10);
+                let deathsNM = parseInt(cell_data[6], 10);
+                myArray.push([state, casesNM, deathsNM]);
+            }
+            if(state === 'US-NC'){
+                let casesNC = parseInt(cell_data[5], 10);
+                let deathsNC = parseInt(cell_data[6], 10);
+                myArray.push([state, casesNC, deathsNC]);
+            }
+            if(state === 'US-ND'){
+                let casesND = parseInt(cell_data[5], 10);
+                let deathsND = parseInt(cell_data[6], 10);
+                myArray.push([state, casesND, deathsND]);
+            }
+            if(state === 'US-OH'){
+                let casesOH = parseInt(cell_data[5], 10);
+                let deathsOH = parseInt(cell_data[6], 10);
+                myArray.push([state, casesOH, deathsOH]);
+            }
+            if(state === 'US-OK'){
+                let casesOK = parseInt(cell_data[5], 10);
+                let deathsOK = parseInt(cell_data[6], 10);
+                myArray.push([state, casesOK, deathsOK]);
+            }
+            if(state === 'US-OR'){
+                let casesOR = parseInt(cell_data[5], 10);
+                let deathsOR = parseInt(cell_data[6], 10);
+                myArray.push([state, casesOR, deathsOR]);
+            }
+            if(state === 'US-PA'){
+                let casesPA = parseInt(cell_data[5], 10);
+                let deathsPA = parseInt(cell_data[6], 10);
+                myArray.push([state, casesPA, deathsPA]);
+            }
+            if(state === 'US-RI'){
+                let casesRI = parseInt(cell_data[5], 10);
+                let deathsRI = parseInt(cell_data[6], 10);
+                myArray.push([state, casesRI, deathsRI]);
+            }
+            if(state === 'US-SC'){
+                let casesSC = parseInt(cell_data[5], 10);
+                let deathsSC = parseInt(cell_data[6], 10);
+                myArray.push([state, casesSC, deathsSC]);
+            }
+             if(state === 'US-SD'){
+                let casesSD = parseInt(cell_data[5], 10);
+                let deathsSD = parseInt(cell_data[6], 10);
+                myArray.push([state, casesSD, deathsSD]);
+            }
+            if(state === 'US-TN'){
+                let casesTN = parseInt(cell_data[5], 10);
+                let deathsTN = parseInt(cell_data[6], 10);
+                myArray.push([state, casesTN, deathsTN]);
+            }
+            if(state === 'US-TX'){
+                let casesTX = parseInt(cell_data[5], 10);
+                let deathsTX = parseInt(cell_data[6], 10);
+                myArray.push([state, casesTX, deathsTX]);
+            }
+            if(state === 'US-UT'){
+                let casesUT = parseInt(cell_data[5], 10);
+                let deathsUT = parseInt(cell_data[6], 10);
+                myArray.push([state, casesUT, deathsUT]);
+            }
+            if(state === 'US-VT'){
+                let casesVT = parseInt(cell_data[5], 10);
+                let deathsVT = parseInt(cell_data[6], 10);
+                myArray.push([state, casesVT, deathsVT]);
+            }
+            if(state === 'US-VA'){
+                let casesVA = parseInt(cell_data[5], 10);
+                let deathsVA = parseInt(cell_data[6], 10);
+                myArray.push([state, casesVA, deathsVA]);
+            }
+            if(state === 'US-WA'){
+                let casesWA = parseInt(cell_data[5], 10);
+                let deathsWA = parseInt(cell_data[6], 10);
+                myArray.push([state, casesWA, deathsWA]);
+            }
+            if(state === 'US-WV'){
+                let casesWV = parseInt(cell_data[5], 10);
+                let deathsWV = parseInt(cell_data[6], 10);
+                myArray.push([state, casesWV, deathsWV]);
+            }
+            if(state === 'US-WI'){
+                let casesWI = parseInt(cell_data[5], 10);
+                let deathsWI = parseInt(cell_data[6], 10);
+                myArray.push([state, casesWI, deathsWI]);
+            }
+            if(state === 'US-WY'){
+                let casesWY = parseInt(cell_data[5], 10);
+                let deathsWY = parseInt(cell_data[6], 10);
+                myArray.push([state, casesWY, deathsWY]);
+            }
+            
+          }
+        }
+      });
+
+  
+      var myArray = [
+           ['State', 'Cases', 'Deaths']
+          ]
+
+      function drawRegionsMap() {
+        var data = google.visualization.arrayToDataTable(myArray);
+
+        var options = {region: 'US',
+                      displayMode: 'regions',
+                      resolution: 'provinces',
+                      colors: ['#228B22','#FFFF00','#FFA500','#FF0000','#8B0000']
+                      };
+
+        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+
+
+
+    <div style=" display: flex; flex-direction: column; justify-content: center; text-align: center;"><h2>USA Coronavirus Confirmed Cases And Deaths By State</h2></div>
+    <div id="regions_div" style="width: 100%; height: 90%;"></div>
+
+
