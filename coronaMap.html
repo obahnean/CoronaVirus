@@ -161,7 +161,7 @@
            
           var _data = data.split(/\r?\n|\r/);
           
-          for(var count = 1; count<59; count++){
+          for(var count = 1; count<=59; count++){
             var cell_data = _data[count].split(",");
             let state = getStateAbbrev(cell_data[0]);
             if(state === 'US-AL'){
