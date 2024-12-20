@@ -155,7 +155,8 @@
     
       console.log(today);
       $.ajax({
-         url:"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports_us/"+today+".csv",
+        /*  url:"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports_us/"+today+".csv", --- NO LONGER UPDATED------ */
+         url: "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/refs/heads/master/csse_covid_19_data/csse_covid_19_daily_reports_us/03-09-2023.csv" 
          dataType:"text",
          success:function(data){
            
